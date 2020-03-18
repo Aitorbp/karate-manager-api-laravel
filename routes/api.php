@@ -32,3 +32,5 @@ Route::delete('/user/delete', 'UserController@deleteUser' );
 Route::post('/group', 'GroupController@newGroup' );
 
 Route::post('/participant', 'ParticipantController@addParticipant' );
+
+Route::post('/karatekas', 'KaratekasController@createKarateka' );
