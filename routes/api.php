@@ -31,6 +31,11 @@ Route::delete('/user/delete', 'UserController@deleteUser' );
 
 Route::post('/group', 'GroupController@newGroup' );
 
+
+//PARTICIPANTS
 Route::post('/participant', 'ParticipantController@addParticipant' );
+Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );
+
+
 
 Route::post('/karatekas', 'KaratekasController@createKarateka' );

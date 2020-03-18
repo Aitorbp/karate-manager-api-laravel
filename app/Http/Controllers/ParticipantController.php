@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Participant;
 use App\Group;
+use App\User;
 use Illuminate\Support\Facades\DB;
 
 class ParticipantController extends Controller
@@ -29,16 +30,19 @@ class ParticipantController extends Controller
                             if (!$request->id_user){
                                 array_push($response['error_msg'], 'id_user name is required');
                             } else{
-                                $adminParcitipant = new Participant();
-                                
-                                $adminParcitipant->id_user = $request->id_user;
-                                $adminParcitipant->id_group = $group->id;
-                                $adminParcitipant->admin_user_group = 0;
-                                $adminParcitipant->points = 0;
-                                $adminParcitipant->own_budget = $group->budget;
-                                $adminParcitipant->save();
-    
-                                $response = array('code' => 200, 'Participant' => $adminParcitipant, 'msg' => 'Participant created');
+                                $parcitipant = Participant::where('id_user', '=', $request->id_user);
+                                if (!$parcitipant->count()) {
+                                    $parcitipant = new Participant();
+                                    $parcitipant->id_user = $request->id_user;
+                                    $parcitipant->id_group = $group->id;
+                                    $parcitipant->admin_user_group = 0;
+                                    $parcitipant->points = 0;
+                                    $parcitipant->own_budget = $group->budget;
+                                    $parcitipant->save();
+                                    $response = array('code' => 200, 'Participant' => $parcitipant, 'msg' => 'Participant created');
+                                }else {
+                                    $response = array('code' => 400, 'error_msg' => "User already registered in this group.");
+                                }
                             }
                
                         } catch (\Exception $exception) {
@@ -61,6 +65,27 @@ class ParticipantController extends Controller
 
         return response($response,$response['code']);
     }
+
+    public function getAllParticipantsByGroup($id)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $user = User::find($id);
+            if (!empty($user)) {
+                $response = ['participants' => $user->id, 'groups' => []];
+                $participants = $user->participantsGroup;
+                return   $response = array('code' => 200, 'participants' => $participants, 'msg' => 'Get all favorite');
+            } else {
+                $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+
+    }
+
+
      
      
 }
