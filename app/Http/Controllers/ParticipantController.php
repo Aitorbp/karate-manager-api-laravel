@@ -86,6 +86,33 @@ class ParticipantController extends Controller
     }
 
 
-     
+
+    public function deleteParticipant($id){
+        if (isset($request) && isset($id)) {
+            //TODO - TO TEST
+            try {
+                $participant = Participant::find($id);
+
+                if (!empty($participant)) {
+                    try {
+                        $participant->delete();
+                        $response = array('code' => 200, 'msg' => 'participant deleted');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+        
+                } else {
+                    $response = array('code' => 401, 'error_msg' => 'Unautorized');
+                }
+
+            } catch (\Throwable $th) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }
+       
+       return response($response,$response['code']);
+    }
      
 }
+
+
