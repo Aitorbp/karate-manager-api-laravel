@@ -30,7 +30,7 @@ Route::delete('/user/delete', 'UserController@deleteUser' );
 //GROUP SERVICES
 
 Route::post('/group', 'GroupController@newGroup' );
-
+Route::delete('/group/delete/{id}', 'GroupController@deleteGroup' );
 
 //PARTICIPANTS
 Route::post('/participant', 'ParticipantController@addParticipant' );
@@ -39,3 +39,5 @@ Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipa
 
 
 Route::post('/karatekas', 'KaratekasController@createKarateka' );
+Route::delete('/karatekas/delete/{id}', 'KaratekasController@deleteKarateka' );
+Route::put('/karatekas/update/{id}', 'KaratekasController@updateKarateka' );

@@ -15,12 +15,12 @@ class CreateKaratekasTable extends Migration
     {
         Schema::create('karatekas', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->string('name');
+            
+            $table->string('name')->unique();
             $table->string('country');
             $table->boolean('gender');
             $table->enum('weight',['-60','-67','-75', '-84', '+84', '-50', '-55', '-61', '-68', '+68']);
-
+            $table->timestamps();
             $table->string('photo_karateka')->nullable();
            
         });
