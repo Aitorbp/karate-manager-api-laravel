@@ -37,7 +37,10 @@ Route::post('/participant', 'ParticipantController@addParticipant' );
 Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );
 Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipant' );
 
-
+//Karatekas
 Route::post('/karatekas', 'KaratekasController@createKarateka' );
 Route::delete('/karatekas/delete/{id}', 'KaratekasController@deleteKarateka' );
 Route::put('/karatekas/update/{id}', 'KaratekasController@updateKarateka' );
+
+//Championship
+Route::post('/championship', 'ChampionshipController@createChampionship' );

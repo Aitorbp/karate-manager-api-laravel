@@ -69,14 +69,17 @@ class GroupController extends Controller
 
         return response($response,$response['code']);
     }
+
 //No funciona con el admin_user_group
     public function deleteGroup($id, Request $request){
         if (isset($id)) {
             //TODO - TO TEST
             try {
                 $group = Group::find($id);
+                
+                var_dump($request->admin_user_group);
 
-                if (!empty($group) && $request->admin_user_group === 1) {
+                if (!empty($group) && $request->admin_user_group == 1) {
                     try {
                         $group->delete();
                         $response = array('code' => 200, 'msg' => 'group deleted');

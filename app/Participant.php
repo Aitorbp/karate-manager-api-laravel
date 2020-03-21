@@ -10,4 +10,9 @@ class Participant extends Model
     {
         return $this->belongsTo('App\Group','id_group');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User','id');
+    }
 }

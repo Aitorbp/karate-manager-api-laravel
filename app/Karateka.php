@@ -19,4 +19,9 @@ class Karateka extends Model
     {
         return $this->hasMany('App\Participant');
     }
+
+    public function championship()
+    {
+        return $this->hasMany('App\Championship');
+    }
 }

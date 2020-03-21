@@ -19,7 +19,7 @@ class CreateChampionshipTable extends Migration
             $table->string('host_country');
             $table->string('photo')->nullable();
             $table->dateTime('start_day')->nullable();
-            $table->dateTime('start_finish')->nullable();
+            $table->dateTime('finish_day')->nullable();
             $table->timestamps();
         });
     }
