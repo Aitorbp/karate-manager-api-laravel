@@ -44,3 +44,6 @@ Route::put('/karatekas/update/{id}', 'KaratekasController@updateKarateka' );
 
 //Championship
 Route::post('/championship', 'ChampionshipController@createChampionship' );
+
+//Result Karatekas
+Route::post('/result/karateka', 'ResultKaratekaController@addResultKarateka' );
