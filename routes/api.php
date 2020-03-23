@@ -47,3 +47,4 @@ Route::post('/championship', 'ChampionshipController@createChampionship' );
 
 //Result Karatekas
 Route::post('/result/karateka', 'ResultKaratekaController@addResultKarateka' );
+Route::get('/result/karateka/{id}', 'ResultKaratekaController@getAllResultByKarateka' );

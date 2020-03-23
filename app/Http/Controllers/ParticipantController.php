@@ -74,7 +74,7 @@ class ParticipantController extends Controller
             if (!empty($user)) {
                 $response = ['participants' => $user->id, 'groups' => []];
                 $participants = $user->participantsGroup;
-                return   $response = array('code' => 200, 'participants' => $participants, 'msg' => 'Get all favorite');
+                return   $response = array('code' => 200, 'participants' => $participants, 'msg' => 'Get all participants by group');
             } else {
                 $response = array('code' => 401, 'error_msg' => 'Unautorized');
             }

@@ -24,4 +24,9 @@ class Karateka extends Model
     {
         return $this->hasMany('App\Championship');
     }
+
+    public function karatekaResult()
+    {
+        return $this->belongsToMany('App\ResultKarateka', 'id_karateka');
+    }
 }

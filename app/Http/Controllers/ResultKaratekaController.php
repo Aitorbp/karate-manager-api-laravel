@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ResultKarateka;
+use App\Karateka;
+use App\Championship;
 use Illuminate\Support\Facades\DB;
 class ResultKaratekaController extends Controller
 {
@@ -50,12 +52,35 @@ class ResultKaratekaController extends Controller
         return response($response, $response['code']);
     }
 
-    public function sumPointsByChamp()
+    public function getAllResultByKarateka($id)
     {
-        $data = DB::table('result_karatekas')
-        ->where('id_karateka', $request->id_karateka)
-        ->groupBy('id_karateka')
-        ->sum()
-        ->get();
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $karateka = Karateka::find($id);
+            if (!empty($karateka)) {
+                
+            $karatekaChampionship = DB::table('result_karatekas')->select('id_championship')->where('id_karateka', '=', $karateka->id)->get();
+    
+               // $championship = DB::table('championship')->where('id', '=', $karatekaChampionship->id_championship)->get();
+                $results = DB::table('result_karatekas')->where('id_karateka', '=', $karateka->id)
+              
+                ->join('championship','result_karatekas.id_championship', '=',  'championship.id')
+                
+                ->select('championship.*', 'result_karatekas.*')
+           
+                ->get();
+
+                return   $response = array('code' => 200,'Karateka'=>$karateka, 'results' => $results, 'msg' => 'Get all result');
+      
+           
+
+            } else {
+                $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+
     }
 }
