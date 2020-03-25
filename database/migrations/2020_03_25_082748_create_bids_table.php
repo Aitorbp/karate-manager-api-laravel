@@ -14,18 +14,22 @@ class CreateBidsTable extends Migration
     public function up()
     {
         Schema::create('bids', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->timestamps();
             $table->integer('bid');
             $table->dateTime('start_hour_bid')->nullable();
+
+            $table->integer('id_market')->unsigned()->nullable();
+
             $table->integer('id_group')->unsigned()->nullable();
             $table->integer('id_participants')->unsigned()->nullable();
             $table->integer('id_karatekas')->unsigned()->nullable();
 
+            $table->foreign('id_market')->references('id')->on('market')->onDelete('cascade');;
+
             $table->foreign('id_participants')->references('id')->on('participants')->onDelete('cascade');;
             $table->foreign('id_group')->references('id')->on('groups')->onDelete('cascade');;
             $table->foreign('id_karatekas')->references('id')->on('karatekas')->onDelete('cascade');;
-  
         });
     }
 

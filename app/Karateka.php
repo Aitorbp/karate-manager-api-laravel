@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Karateka extends Model
 {
     protected $fillable = [
-        'name', 'App', 'country','gender','weight', 'injured', 'discontinued', 'value'
+        'name', 'country','gender','weight', 'photo_karateka'
     ];
 
     public function groups()

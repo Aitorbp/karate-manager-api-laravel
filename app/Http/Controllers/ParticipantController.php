@@ -6,32 +6,42 @@ use Illuminate\Http\Request;
 use App\Participant;
 use App\Group;
 use App\User;
+use App\Sale;
+use App\Karateka;
 use Illuminate\Support\Facades\DB;
 
 class ParticipantController extends Controller
 {
-    
 
     public function addParticipant(Request $request)
     {
         $response = array('code' => 400, 'error_msg' => []);
 
+        
+
         if ($request->name_group && $request->password_group) {
             //TODO - TO TEST
+        
             try {
+              
+
                 $group = Group::where('name_group', "$request->name_group")->first();
 
                 if (!empty($group)) {
                     if ($group->password_group === hash('sha256', $request->password_group)) {
                         try {
+                            
                         
-                            $group->get();
+                 
 
                             if (!$request->id_user){
                                 array_push($response['error_msg'], 'id_user name is required');
                             } else{
-                                $parcitipant = Participant::where('id_user', '=', $request->id_user);
+
+                               
+                                $parcitipant = Participant::where('id_user', '=', $request->id_user)->where('id_group', '=', $group->id);
                                 if (!$parcitipant->count()) {
+                                  
                                     $parcitipant = new Participant();
                                     $parcitipant->id_user = $request->id_user;
                                     $parcitipant->id_group = $group->id;
@@ -39,9 +49,39 @@ class ParticipantController extends Controller
                                     $parcitipant->points = 0;
                                     $parcitipant->own_budget = $group->budget;
                                     $parcitipant->save();
+
+
+                                    //INCORPORAR KARATEKAS RANDOM A PARTICIPANTE
+
+                                    //Filtrar por grupo
+                              
+                                    var_dump($group->id);
+                                    $salesByGroup = DB::table('sales')->where('id_group', '=', $group->id)->get();
+
+                                    var_dump($salesByGroup);
+                     
+                                    $karatekas = Karateka::all();
+                                    foreach ($salesByGroup  as $value) {
+                                      $karatekas = $karatekas->where('id', '<>', $value->id_karatekas);
+
+                                    }
+                                    var_dump($karatekas);
+                          
+                                
+                                    $karatekaRandom = $karatekas->random(2); 
+                                    foreach ($karatekaRandom as $key) {
+                                        $sale = new Sale();
+                                        $sale->id_group = $group->id;
+                                        $sale->id_participants =  $parcitipant->id;
+                                        $sale->id_karatekas = $key->id;
+                                        $sale->value = 0;
+                                        $sale->save();
+                                    }
+                                      
+
                                     $response = array('code' => 200, 'Participant' => $parcitipant, 'msg' => 'Participant created');
                                 }else {
-                                    $response = array('code' => 400, 'error_msg' => "User already registered in this group.");
+                                    $response = array('code' => 400, 'error_msg' => "Participant already registered in this group.");
                                 }
                             }
                
@@ -87,6 +127,8 @@ class ParticipantController extends Controller
 
 
 
+
+
     public function deleteParticipant($id){
         if (isset($request) && isset($id)) {
             //TODO - TO TEST
@@ -112,6 +154,8 @@ class ParticipantController extends Controller
        
        return response($response,$response['code']);
     }
+
+
      
 }
 

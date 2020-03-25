@@ -98,4 +98,22 @@ class GroupController extends Controller
        
        return response($response,$response['code']);
     }
+
+    public function getAllGroup()
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+
+        try {
+            $group = Group::all();
+            if (count($group) > 0) {
+                $response = array('code' => 200, 'animals' => $group);
+            } else {
+                $response = array('code' => 404, 'error_msg' => ['group not found']);
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+
+        return response($response, $response['code']);
+    }
 }

@@ -14,9 +14,8 @@ class CreateSalesTable extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->id();
-     
-       //    $table->boolean('sold')->default('1');
+            $table->increments('id');
+    
             $table->unsignedBigInteger('value');
 
             $table->integer('id_group')->unsigned()->nullable();
