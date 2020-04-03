@@ -31,12 +31,13 @@ Route::delete('/user/delete', 'UserController@deleteUser' );
 
 Route::post('/group', 'GroupController@newGroup' );
 Route::delete('/group/delete/{id}', 'GroupController@deleteGroup' );
+Route::get('/group/getall', 'GroupController@getAllGroup' );
 
 //PARTICIPANTS
 Route::post('/participant', 'ParticipantController@addParticipant' );
 Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );
 Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipant' );
-
+Route::get('/participant/add/karatekas', 'ParticipantController@randomKaratekasByPlayer' );
 //Karatekas
 Route::post('/karatekas', 'KaratekasController@createKarateka' );
 Route::delete('/karatekas/delete/{id}', 'KaratekasController@deleteKarateka' );
@@ -48,3 +49,7 @@ Route::post('/championship', 'ChampionshipController@createChampionship' );
 //Result Karatekas
 Route::post('/result/karateka', 'ResultKaratekaController@addResultKarateka' );
 Route::get('/result/karateka/{id}', 'ResultKaratekaController@getAllResultByKarateka' );
+
+//Market
+
+Route::post('/market/update', 'MarketController@updateMarket' );

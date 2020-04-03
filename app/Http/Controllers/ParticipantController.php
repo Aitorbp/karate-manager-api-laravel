@@ -23,17 +23,11 @@ class ParticipantController extends Controller
             //TODO - TO TEST
         
             try {
-              
-
                 $group = Group::where('name_group', "$request->name_group")->first();
 
                 if (!empty($group)) {
                     if ($group->password_group === hash('sha256', $request->password_group)) {
                         try {
-                            
-                        
-                 
-
                             if (!$request->id_user){
                                 array_push($response['error_msg'], 'id_user name is required');
                             } else{
