@@ -29,4 +29,9 @@ class Karateka extends Model
     {
         return $this->belongsToMany('App\ResultKarateka', 'id_karateka');
     }
+
+    public function karatekasByGroupInMarket()
+    {
+        return $this->belongsToMany('App\Karateka', 'market', 'id_group', 'id_karatekas');
+    }
 }

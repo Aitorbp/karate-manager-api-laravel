@@ -106,7 +106,7 @@ class GroupController extends Controller
         try {
             $group = Group::all();
             if (count($group) > 0) {
-                $response = array('code' => 200, 'animals' => $group);
+                $response = array('code' => 200, 'groups' => $group);
             } else {
                 $response = array('code' => 404, 'error_msg' => ['group not found']);
             }

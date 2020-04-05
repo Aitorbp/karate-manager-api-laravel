@@ -53,3 +53,8 @@ Route::get('/result/karateka/{id}', 'ResultKaratekaController@getAllResultByKara
 //Market
 
 Route::post('/market/update', 'MarketController@updateMarket' );
+Route::get('/market/show/karatekas/{id}', 'MarketController@showMarketByGroup' );
+
+//Bids
+
+Route::post('/bid/{id}', 'BidController@createBid' );

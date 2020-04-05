@@ -56,7 +56,7 @@ class ParticipantController extends Controller
                      
                                     $karatekas = Karateka::all();
                                     foreach ($salesByGroup  as $value) {
-                                      $karatekas = $karatekas->where('id', '<>', $value->id_karatekas);
+                                      $karatekas = $karatekas->where('id', '<>', $value->id_karatekas); // Get all the karateka that don't have that id 
 
                                     }
                                     var_dump($karatekas);
