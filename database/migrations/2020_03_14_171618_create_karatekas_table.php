@@ -20,6 +20,7 @@ class CreateKaratekasTable extends Migration
             $table->string('country');
             $table->boolean('gender');
             $table->enum('weight',['-60','-67','-75', '-84', '+84', '-50', '-55', '-61', '-68', '+68']);
+            $table->integer('value');
             $table->timestamps();
             $table->string('photo_karateka')->nullable();
            

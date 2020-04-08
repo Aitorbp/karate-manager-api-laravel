@@ -16,7 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
     
-            $table->unsignedBigInteger('value');
+            $table->unsignedBigInteger('bid_participant');
 
             $table->integer('id_group')->unsigned()->nullable();
             $table->integer('id_participants')->unsigned()->nullable();;

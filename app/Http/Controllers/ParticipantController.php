@@ -68,7 +68,7 @@ class ParticipantController extends Controller
                                         $sale->id_group = $group->id;
                                         $sale->id_participants =  $parcitipant->id;
                                         $sale->id_karatekas = $key->id;
-                                        $sale->value = 0;
+                                        $sale->bid_participant = 0;
                                         $sale->save();
                                     }
                                       

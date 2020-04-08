@@ -34,6 +34,7 @@ class KaratekasController extends Controller
                     $karateka->country = $request->country;
                     $karateka->gender = $request->gender;
                     $karateka->weight = $request->weight;
+                    $karateka->value = $request->value;
                     $karateka->photo_karateka = $request->photo_karateka;
          
                     $karateka->save();
