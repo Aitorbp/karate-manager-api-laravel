@@ -16,7 +16,7 @@ class MarketController extends Controller
     {  
         $response = array('code' => 400, 'error_msg' => []);
         $groups = Group::all()
-        ->map(function ($group) {
+        ->map(function ($group) use (& $response) {
 
             $salesByGroup = DB::table('sales')->where('id_group', '=', $group->id)->get();
             $karatekas = Karateka::all();
@@ -38,11 +38,7 @@ class MarketController extends Controller
               $response = array('code' => 200, 'msg' => 'All karatekas are in group',);
 
             }else{
-
-                $er = "Goog, there are karatekas available in market";
-                var_dump($er);
-       
-                foreach($karatekaRandom as $karateka){
+                foreach($karatekaRandom as $karateka)  {
     
                     $onSalePlayer = new Market();
                   

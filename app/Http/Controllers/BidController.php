@@ -44,27 +44,52 @@ class BidController extends Controller
                                         ->map(function ($participant) use ($karateka, $request, $market, & $response, & $bid){ // Pasamos el response y bid como referencia con &
 
                                             if($participant->id == $request->id_participant && $karateka->pivot->id_group == $participant->id_group){
-                                                
-                                                $bid->id_market = $market->id;
-                                                $bid->id_group = $market->id_group;
-                                                $bid->id_karatekas = $market->id_karatekas;
-                                               // $bid->bid = $request->bid;
-                                                $bid->id_participants = $request->id_participant;
-                                                self::restrictionMinimunBid($request, $karateka, $bid);
-                                            
-                                                // var_dump($response);
-                                                // die;
-                                                $response = array('code' => 200, 'Bid' => $bid, 'msg' => 'Bid created'); ///ESTE ES EL RESPONSE QUE NO FUNCIONA 
+
+                                                $flight = Bid::firstOrCreate(
+                                                    ['id_participants' => $request->id_participant, 
+                                                    'id_karatekas' => $market->id_karatekas,
+                                                    'id_group' => $market->id_group,
+                                                    'bid' => $request->bid],
+
+                                                    ['id_market' => $market->id, 
+                                                    'id_group' => $market->id_group,
+                                                    'id_karatekas' => $market->id_karatekas,
+                                                    'id_participants' => $request->id_participant,
+                                                    'bid' => 3300
+                                                    ]);
+                                                    $response = array('code' => 200, 'Bid' => $flight, 'msg' => 'Bid created'); 
+                                                  
+/*
+                                                $bidFilter = Bid::where('id_participants', '=', $request->id_participant)
+                                                ->where('id_karatekas', '=',$market->id_karatekas)
+                                                ->where('id_group', '=',$market->id_group)
+                                                ->where('bid', '=',$request->bid);
+
+                                                if(!$bidFilter->count()){
+                                                    $bid->id_market = $market->id;
+                                                    $bid->id_group = $market->id_group;
+                                                    $bid->id_karatekas = $market->id_karatekas;
+                                          
+                                                    $bid->id_participants = $request->id_participant;
+                                                    self::restrictionMinimunBid($request, $karateka, $bid);
+                                                    
+                                                    $bid->save();
+                                                    
+                                                    $response = array('code' => 200, 'Bid' => $bid, 'msg' => 'Bid created'); 
+                                                }else{
+
+
+
+                                                    $response = array('code' => 400, 'error_msg' => "Bid already registered.");
+                                                }
+                                             */
                                             }else{
                                                 $error ="The participant isnt in this group, it is not correct";
                                                 var_dump($error);
                                                // $response = array('code' => 401, 'error_msg' => 'The participant isnt in this group, it is not correct');
                                             }
                                         });
-
                                     }
-                                  
-
                                 });
                                
                             }else{
@@ -82,17 +107,17 @@ class BidController extends Controller
        return response($response, $response['code']);
 
     }
-    public function restrictionMinimunBid(Request $request, $karateka, $bid)
+    public function restrictionMinimunBid(Request & $request, $karateka, & $bid)
     {
         $allKaratekas = Karateka::all()
         ->map(function ($allKaratekas) use ($karateka, $request, $bid){
                 if($karateka->id == $allKaratekas->id ){
                    if($request->bid > $allKaratekas->value){
                     
-                    
-                    $bid->bid = $request->bid;
-
-                    $bid->save();
+                    var_dump($request->bid);
+                    return $request->bid;
+           
+                   
                     $msg ="The bid is more than the value of karateka /  Bid created.";
                     var_dump($msg);
   

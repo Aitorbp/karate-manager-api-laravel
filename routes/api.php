@@ -59,4 +59,8 @@ Route::get('/market/show/karatekas/{id}', 'MarketController@showMarketByGroup' )
 
 Route::post('/bid/{id}', 'BidController@createBid' );
 
+
+//Sales
 Route::post('/sold', 'SalesController@soldKarateka' );
+
+Route::get('/karatekas/byparticipant/{id}', 'SalesController@showSoldByParticipant' );

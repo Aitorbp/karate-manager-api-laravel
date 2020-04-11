@@ -39,5 +39,24 @@ class SalesController extends Controller
        return response($response, $response['code']);
     }
 
+    public function showSoldByParticipant($idParticipant)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $karateka = Karateka::find($idParticipant);
+            if (!empty($karateka)) {
+                $response = ['karatekas' => $karateka->id, 'participant' => []];
+                $karatekasSold = $karateka->karatekasSoldByParticipant;
+                return   $response = array('code' => 200, 'Karatekas by group in market' => $karatekasSold, 'msg' => 'Get all karatekas by group in market');
+            } else {
+                return $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+
+    }
+
 
 }
