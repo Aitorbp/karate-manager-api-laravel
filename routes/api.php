@@ -64,3 +64,7 @@ Route::post('/bid/{id}', 'BidController@createBid' );
 Route::post('/sold', 'SalesController@soldKarateka' );
 
 Route::get('/karatekas/byparticipant/{id}', 'SalesController@showSoldByParticipant' );
+
+Route::post('/payments', 'SalesController@makePaymentsParticipants' );
+
+Route::post('/average/karatekas', 'SalesController@averageKaratekas' );

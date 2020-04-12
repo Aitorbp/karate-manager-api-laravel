@@ -106,7 +106,7 @@ class ParticipantController extends Controller
         try {
             $user = User::find($id);
             if (!empty($user)) {
-                $response = ['participants' => $user->id, 'groups' => []];
+          
                 $participants = $user->participantsGroup;
                 return   $response = array('code' => 200, 'participants' => $participants, 'msg' => 'Get all participants by group');
             } else {

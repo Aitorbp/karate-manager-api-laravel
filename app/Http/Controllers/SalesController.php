@@ -8,6 +8,7 @@ use App\Market;
 use App\Bid;
 use App\Karateka;
 use App\Sale;
+use App\Participant;
 use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
@@ -24,9 +25,7 @@ class SalesController extends Controller
         
 
         foreach($bidsPerKaratekas as $best_bid){
-
-            $sold = new Sale();
-                        
+            $sold = new Sale();       
             $sold->bid_participant = $best_bid->max_bid;
             $sold->id_group = $best_bid->id_group;
             $sold->id_participants = $best_bid->id_participants;
@@ -56,6 +55,53 @@ class SalesController extends Controller
         }
         return response($response, $response['code']);
 
+    }
+
+    public function makePaymentsParticipants()
+    {
+     
+        $response = array('code' => 400, 'error_msg' => []);
+        $sales = Sale::all()
+        ->map(function ($sale) use (& $response){
+            $participants = Participant::all()
+            ->map(function ($participant) use (& $response,  $sale ){
+                if($sale->id_participants == $participant->id){
+                    $participant->own_budget = $participant->own_budget - $sale->bid_participant;
+                    $participant->save();
+                    $response = array('code' => 200, 'Participants payments done');
+                }
+            });
+        });
+
+        return response($response, $response['code']);
+    }
+
+    public function averageKaratekas()
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        
+       
+        $avgPerKaratekas = DB::table('sales')
+        ->select([DB::raw('AVG(sales.bid_participant) AS avg_bid'),  'sales.id_karatekas'])
+        ->groupBy('sales.id_karatekas')
+        ->get()
+        ->map(function ($avg) use (& $response){
+            $karateka = Karateka::all()
+            ->map(function ($karatekaFilter) use (& $response, $avg){
+
+                if($avg->id_karatekas == $karatekaFilter->id){
+                    $karatekaFilter->value = $avg->avg_bid;
+       
+                    $karatekaFilter->save();
+                    $response = array('code' => 200, 'Karatekas value updated');
+                }
+            });
+           
+        });
+    
+
+      
+        return response($response, $response['code']);
     }
 
 
