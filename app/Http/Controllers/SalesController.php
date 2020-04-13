@@ -21,9 +21,6 @@ class SalesController extends Controller
         ->select([DB::raw('MAX(bids.bid) AS max_bid'), 'bids.id_group', 'bids.id_karatekas', 'bids.id_participants'])
         ->groupBy('bids.id_group', 'bids.id_karatekas')
         ->get();
-
-        
-
         foreach($bidsPerKaratekas as $best_bid){
             $sold = new Sale();       
             $sold->bid_participant = $best_bid->max_bid;

@@ -44,36 +44,37 @@ class ParticipantController extends Controller
                                     $parcitipant->own_budget = $group->budget;
                                     $parcitipant->save();
 
+//var_dump($parcitipant);
 
                                     //INCORPORAR KARATEKAS RANDOM A PARTICIPANTE
 
                                     //Filtrar por grupo
                               
-                                    var_dump($group->id);
+                                //    var_dump($group->id);
                                     $salesByGroup = DB::table('sales')->where('id_group', '=', $group->id)->get();
 
-                                    var_dump($salesByGroup);
+                              //      var_dump($salesByGroup);
                      
                                     $karatekas = Karateka::all();
                                     foreach ($salesByGroup  as $value) {
                                       $karatekas = $karatekas->where('id', '<>', $value->id_karatekas); // Get all the karateka that don't have that id 
 
                                     }
-                                    var_dump($karatekas);
-                          
+                                  //  var_dump($karatekas);
+                                  //  die;
                                 
-                                    $karatekaRandom = $karatekas->random(2); 
+                                    $karatekaRandom = $karatekas->random(2);
+                                    //  var_dump($karatekaRandom);
+                                    //  die;
                                     foreach ($karatekaRandom as $key) {
                                         $sale = new Sale();
                                         $sale->id_group = $group->id;
                                         $sale->id_participants =  $parcitipant->id;
                                         $sale->id_karatekas = $key->id;
-                                        $sale->bid_participant = $karatekas->value;
+                                        $sale->bid_participant = $key->value;
                                         $sale->save();
                                     }
-                                      
-
-                                    $response = array('code' => 200, 'Participant' => $parcitipant, 'msg' => 'Participant created');
+                                    $response = array('code' => 200, 'Participant' => $parcitipant, 'Sales of participant' => $sale, 'msg' => 'Participant and sales created', );
                                 }else {
                                     $response = array('code' => 400, 'error_msg' => "Participant already registered in this group.");
                                 }
@@ -100,7 +101,32 @@ class ParticipantController extends Controller
         return response($response,$response['code']);
     }
 
+
     public function getAllParticipantsByGroup($id)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $group = Group::find($id);
+            if (!empty($group)) {
+              
+                $results = DB::table('participants')
+                ->where('id_group', '=', $group->id)
+                ->join('users', 'users.id', '=' , 'participants.id_user' )
+                ->select('participants.*','participants.id', 'users.email', 'users.name', 'photo_profile')->get();
+            //    ->join('users', 'users.id', '=' , 'participants.id_users' );
+             
+                return   $response = array('code' => 200, 'participants' => $results, 'msg' => 'Get all participants by group');
+            } else {
+                $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            }
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+
+    }
+/*
+    public function getAsllParticipantsByGroup($id)
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
@@ -118,11 +144,7 @@ class ParticipantController extends Controller
         return response($response, $response['code']);
 
     }
-
-
-
-
-
+*/
     public function deleteParticipant($id){
         if (isset($request) && isset($id)) {
             //TODO - TO TEST
