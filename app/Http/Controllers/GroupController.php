@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Group;
 use App\Participant;
+use App\Sale;
+use App\Karateka;
 use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
@@ -14,12 +16,12 @@ class GroupController extends Controller
        
         $response = array('code' => 400, 'error_msg' => []);
 
+       
         if (isset($request)) {
         
             if (!$request->name_group) array_push($response['error_msg'], 'Name is required');
             if (!$request->budget) array_push($response['error_msg'], 'Budget is required');
             if (!$request->gender) array_push($response['error_msg'], 'Gender is required');
-            if (!$request->weight) array_push($response['error_msg'], 'Weight is required');
             if (!$request->id_user) array_push($response['error_msg'], 'Id_group name is required');
             if (!$request->password_group) array_push($response['error_msg'], 'Id_group name is required');
             if (!count($response['error_msg']) > 0) {
@@ -29,12 +31,11 @@ class GroupController extends Controller
                     if (!count($response['error_msg']) > 0) {
                         try {
                             $group = new Group();
-                            $group->name_group = $request->name_group;
                             $group->budget = $request->budget;
                             $group->gender = $request->gender;
-                            $group->weight = $request->weight; /// ARREGLAR ERROR WEIGHT SIEMPRE APARECE -84
-                            $group->id_user = $request->id_user; /// ARREGLAR ERROR ID SIEMPRE APARECE 1
+                            $group->id_user = $request->id_user; 
                             $group->password_group = hash('sha256', $request->password_group);
+                            $group->name_group = $request->name_group;
                             $group->save();
 
 
@@ -45,17 +46,31 @@ class GroupController extends Controller
                             $adminParcitipant->admin_user_group = 1;
 
                             $adminParcitipant->id_group = $group->id;
-
-                      
                             $adminParcitipant->save();
 
-                            $response = array('code' => 200, 'group' => $group, 'msg' => 'Group created', 'Admin Participant' => $adminParcitipant, 'msg' => 'Group admin created');
+                            $karatekas = Karateka::all();
+                            $karatekaRandom = $karatekas->random(2);
+                            foreach ($karatekaRandom as $key) {
+                                $sale = new Sale();
+                                $sale->id_group = $group->id;
+                                $sale->id_participants =  $adminParcitipant->id;
+                                $sale->id_karatekas = $key->id;
+                                $sale->bid_participant = $key->value;
+                                $sale->save();
+                            }
+
+                            $response = array('code' => 200, 'group' => $group, 
+                            'Admin Participant' => $adminParcitipant, 
+                            'Karatekas of participant' => $karatekaRandom, 
+                            'msg' => 'Group, admin participant and karatekas ramdon created');
                         
                         
                         } catch (\Exception $exception) {
                             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
                         }
 
+                    } else {
+                        $response = array('code' => 400, 'error_msg' => "Group already registered");
                     }
 
 

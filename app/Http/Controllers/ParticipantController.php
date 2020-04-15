@@ -74,7 +74,7 @@ class ParticipantController extends Controller
                                         $sale->bid_participant = $key->value;
                                         $sale->save();
                                     }
-                                    $response = array('code' => 200, 'Participant' => $parcitipant, 'Sales of participant' => $sale, 'msg' => 'Participant and sales created', );
+                                    $response = array('code' => 200, 'Participant' => $parcitipant, 'Sales of participant' => $karatekaRandom, 'msg' => 'Participant and sales created', );
                                 }else {
                                     $response = array('code' => 400, 'error_msg' => "Participant already registered in this group.");
                                 }
