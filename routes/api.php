@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware ('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -29,7 +29,7 @@ Route::delete('/user/delete', 'UserController@deleteUser' );
 
 //GROUP SERVICES
 
-Route::post('/group', 'GroupController@newGroup' );
+Route::middleware ('auth:api')->post('/group', 'GroupController@newGroup' );
 Route::delete('/group/delete/{id}', 'GroupController@deleteGroup' );
 Route::get('/group/getall', 'GroupController@getAllGroup' );
 

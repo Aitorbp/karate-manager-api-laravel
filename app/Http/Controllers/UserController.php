@@ -45,7 +45,7 @@ class UserController extends Controller
                         $user->password = hash('sha256', $request->password);
                         $user->name = $request->name;
                         $token = uniqid() . $user->email;
-                        $user->token = hash('sha256', $token);
+                        $user->api_token = hash('sha256', $token);
                         $user->save();
                         $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
                     } catch (\Exception $exception) {
@@ -157,7 +157,7 @@ class UserController extends Controller
                     if ($user->password === hash('sha256', $request->password)) {
                         try {
                             $token = uniqid() . $user->email;
-                            $user->token = hash('sha256', $token);
+                            $user->api_token = hash('sha256', $token);
                             $user->save();
                             $response = array('code' => 200, 'user' => $user, 'msg' => 'Login successful',);
                         } catch (\Exception $exception) {
