@@ -107,6 +107,7 @@ class ParticipantController extends Controller
         $response = array('code' => 400, 'error_msg' => []);
         try {
             $group = Group::find($id);
+            
             if (!empty($group)) {
               
                 $results = DB::table('participants')
@@ -124,6 +125,36 @@ class ParticipantController extends Controller
         }
         return response($response, $response['code']);
 
+    }
+
+
+    public function getAllGroupByParticipant($id_user){
+ 
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+            $participants = Participant::where('id_user','=',$id_user)->get();
+            
+            $groups = Group::all();
+            $groupsByParticipant = array();
+            foreach ($participants as $participant) {
+                foreach ($groups as $group){
+                  if($group->id == $participant->id_group) {
+
+                    $groupsByParticipant[] = $group;
+               
+                  }
+            
+                }
+            }
+            $response = array('code' => 200, 'groupByParticipant' => $groupsByParticipant, 'msg' => 'Get all groups by participant');
+
+
+          
+           
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
     }
 /*
     public function getAsllParticipantsByGroup($id)

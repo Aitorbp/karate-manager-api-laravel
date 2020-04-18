@@ -38,6 +38,9 @@ Route::middleware ('auth:api')->post('/participant', 'ParticipantController@addP
 Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );
 Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipant' );
 Route::get('/participant/add/karatekas', 'ParticipantController@randomKaratekasByPlayer' );
+
+Route::get('/participant/get/groupsByParticipant/{id}','ParticipantController@getAllGroupByParticipant');
+
 //Karatekas
 Route::post('/karatekas', 'KaratekasController@createKarateka' );
 Route::delete('/karatekas/delete/{id}', 'KaratekasController@deleteKarateka' );
