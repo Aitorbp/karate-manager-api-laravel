@@ -15,9 +15,10 @@ class GroupController extends Controller
     {
        
         $response = array('code' => 400, 'error_msg' => []);
-
+     
        
         if (isset($request)) {
+     
             if (!$request->api_token) array_push($response['error_msg'], 'Token is required');
             if (!$request->name_group) array_push($response['error_msg'], 'Name is required');
             if (!$request->budget) array_push($response['error_msg'], 'Budget is required');

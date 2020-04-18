@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+
 class UserController extends Controller
 {
     public function generateToken(Request $request, $id)
@@ -94,19 +95,20 @@ class UserController extends Controller
     }
 
     //Get an specific user by ID
-    public function getUser($id)
+    public function getUser(Request $request)
     {
         $response = array('code' => 400, 'error_msg' => []);
 
-        if (isset($id)) {
+        if (isset($request)) {
 
             try {
-                $user = User::find($id);
+                $user = User::where('api_token','=', $request->api_token)->first();
+              
             } catch (\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());
             }
             if (!empty($user)) {
-                $response = array('code' => 200, 'user' => $user);
+                $response = array('code' => 200, 'user' => $user, 'msg' => 'User created');
             } else {
                 $response = array('code' => 404, 'error_msg' => ['User not found']);
             }

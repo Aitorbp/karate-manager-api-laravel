@@ -22,7 +22,7 @@ Route::middleware ('auth:api')->get('/user', function (Request $request) {
 Route::post('/user', 'UserController@registerUser' );
 Route::post('/user/generateToken/{id}', 'UserController@generateToken' );
 Route::post('/user/login', 'UserController@loginUser' );
-Route::get('/user/one/{id}', 'UserController@getUser' );
+Route::get('/user/one', 'UserController@getUser' );
 Route::post('/user/update', 'UserController@updateUser' );
 Route::delete('/user/delete', 'UserController@deleteUser' );
 
@@ -34,7 +34,7 @@ Route::delete('/group/delete/{id}', 'GroupController@deleteGroup' );
 Route::get('/group/getall', 'GroupController@getAllGroup' );
 
 //PARTICIPANTS
-Route::post('/participant', 'ParticipantController@addParticipant' );
+Route::middleware ('auth:api')->post('/participant', 'ParticipantController@addParticipant' );
 Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );
 Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipant' );
 Route::get('/participant/add/karatekas', 'ParticipantController@randomKaratekasByPlayer' );
