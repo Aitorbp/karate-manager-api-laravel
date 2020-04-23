@@ -39,7 +39,7 @@ Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipants
 Route::delete('/participant/delete/{id}', 'ParticipantController@deleteParticipant' );
 Route::get('/participant/add/karatekas', 'ParticipantController@randomKaratekasByPlayer' );
 
-Route::get('/participant/get/groupsByParticipant/{id}','ParticipantController@getAllGroupByParticipant');
+Route::get('/participant/get/groupsByParticipant/{id_user}','ParticipantController@getAllGroupByParticipant');
 
 //Karatekas
 Route::post('/karatekas', 'KaratekasController@createKarateka' );

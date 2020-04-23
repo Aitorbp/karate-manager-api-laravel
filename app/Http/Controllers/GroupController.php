@@ -43,7 +43,7 @@ class GroupController extends Controller
                             $adminParcitipant = new Participant();
                             $adminParcitipant->own_budget = $request->budget;
                             $adminParcitipant->id_user = $request->id_user;
-                            $adminParcitipant->points = $request->points;
+                            $adminParcitipant->points = 0;
                             $adminParcitipant->admin_user_group = 1;
 
                             $adminParcitipant->id_group = $group->id;
@@ -61,8 +61,8 @@ class GroupController extends Controller
                             }
 
                             $response = array('code' => 200, 'group' => $group, 
-                            'Admin Participant' => $adminParcitipant, 
-                            'Karatekas of participant' => $karatekaRandom, 
+                            'AdminParticipant' => $adminParcitipant, 
+                            'Karatekas' => $karatekaRandom, 
                             'msg' => 'Group, admin participant and karatekas ramdon created');
                         
                         

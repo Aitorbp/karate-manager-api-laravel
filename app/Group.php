@@ -10,4 +10,9 @@ class Group extends Model
     {
         return $this->hasMany('App\Participant');
     }
+
+    public function groupByParticipant()
+    {
+        return $this->belongsToMany('App\Group', 'participants', 'id_user','id_group');
+    }
 }

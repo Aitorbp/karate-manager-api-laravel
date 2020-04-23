@@ -134,6 +134,7 @@ class ParticipantController extends Controller
         try {
             $participants = Participant::where('id_user','=',$id_user)->get();
             
+
             $groups = Group::all();
             $groupsByParticipant = array();
             foreach ($participants as $participant) {
