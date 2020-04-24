@@ -7,6 +7,7 @@ use App\Group;
 use App\Participant;
 use App\Sale;
 use App\Karateka;
+use App\Market;
 use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
@@ -59,6 +60,7 @@ class GroupController extends Controller
                                 $sale->bid_participant = $key->value;
                                 $sale->save();
                             }
+                            self::createMarketByGroup($group->id);
 
                             $response = array('code' => 200, 'group' => $group, 
                             'AdminParticipant' => $adminParcitipant, 
@@ -85,6 +87,33 @@ class GroupController extends Controller
 
         return response($response,$response['code']);
     }
+
+    public function createMarketByGroup($id_group){
+        $karatekas = Karateka::all();
+        $numberKaratekasInMarket = 3;
+        $karatekaRandom = $karatekas->random($numberKaratekasInMarket);  
+        if( count($karatekas) <= $numberKaratekasInMarket){
+            $re = "All karatekas are in group";
+            var_dump($re);
+          
+          $response = array('code' => 200, 'msg' => 'All karatekas are in group',);
+
+        }else{
+            foreach($karatekaRandom as $karateka)  {
+
+                $onSalePlayer = new Market();
+              
+                $onSalePlayer->id_group = $id_group;
+              
+                $onSalePlayer->id_karatekas = $karateka->id;
+                $onSalePlayer->date_release = $karateka->created_at;
+                $onSalePlayer->save();      
+            }  
+            
+           $response = array('code' => 200, 'group' => $onSalePlayer, 'msg' => 'Karateka on sale created');
+        } 
+    return response($response, $response['code']);
+}
 
 //No funciona con el admin_user_group
     public function deleteGroup($id, Request $request){
