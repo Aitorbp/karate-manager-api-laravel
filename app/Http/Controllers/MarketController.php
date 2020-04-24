@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\DB;
 class MarketController extends Controller
 {
 
+    
+
     public function updateMarket()
     {  
         $response = array('code' => 400, 'error_msg' => []);
+        DB::table('market')->delete();
         $groups = Group::all()
         ->map(function ($group) use (& $response) {
 
@@ -38,6 +41,7 @@ class MarketController extends Controller
               $response = array('code' => 200, 'msg' => 'All karatekas are in group',);
 
             }else{
+              //  DB::table('market')->delete();
                 foreach($karatekaRandom as $karateka)  {
     
                     $onSalePlayer = new Market();
@@ -56,6 +60,8 @@ class MarketController extends Controller
         });
         return response($response, $response['code']);
     }
+
+
 
     // public function showMarketByGroup($idGroup)
     // {
@@ -85,7 +91,7 @@ class MarketController extends Controller
             
             $karatekas = Karateka::all();
             $karatekasByMarket = array();
-            
+
             foreach ($market as $onSale) {
                 foreach ($karatekas as $karateka){
 
