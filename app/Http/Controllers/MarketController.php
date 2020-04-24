@@ -26,7 +26,7 @@ class MarketController extends Controller
               $karatekas = $karatekas->where('id', '<>', $value->id_karatekas); // Get all the karateka that don't have that id 
             }
 
-            $numberKaratekasInMarket = 5;
+            $numberKaratekasInMarket = 3;
             $karatekaRandom = $karatekas->random($numberKaratekasInMarket);  
     
     
@@ -57,23 +57,51 @@ class MarketController extends Controller
         return response($response, $response['code']);
     }
 
-    public function showMarketByGroup($idGroup)
-    {
+    // public function showMarketByGroup($idGroup)
+    // {
+       
+    //     $response = array('code' => 400, 'error_msg' => []);
+    //     try {
+    //         $karateka = Karateka::find($idGroup);
+    //         if (!empty($karateka)) {
+               
+    //             $response = ['karatekas' => $karateka->id, 'groups' => []];
+    //             $karatekasInMarket = $karateka->karatekasByGroupInMarket;
+    //             return   $response = array('code' => 200, 'karatekas' => $karatekasInMarket, 'msg' => 'Get all karatekas by group in market');
+    //         } else {
+    //             return $response = array('code' => 401, 'error_msg' => 'Unautorized');
+    //         }
+    //     } catch (\Exception $exception) {
+    //         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+    //     }
+    //     return response($response, $response['code']);
+
+    // }
+    public function showMarketByGroup($id_group){
+ 
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $karateka = Karateka::find($idGroup);
-            if (!empty($karateka)) {
-                $response = ['karatekas' => $karateka->id, 'groups' => []];
-                $karatekasInMarket = $karateka->karatekasByGroupInMarket;
-                return   $response = array('code' => 200, 'Karatekas by group in market' => $karatekasInMarket, 'msg' => 'Get all karatekas by group in market');
-            } else {
-                return $response = array('code' => 401, 'error_msg' => 'Unautorized');
+            $market = Market::where('id_group','=',$id_group)->get();
+            
+            $karatekas = Karateka::all();
+            $karatekasByMarket = array();
+            
+            foreach ($market as $onSale) {
+                foreach ($karatekas as $karateka){
+
+                  if($karateka->id == $onSale->id_karatekas) {
+
+                    $karatekasByMarket[] = $karateka;
+                  }
+
+                }
             }
+            $response = array('code' => 200, 'karatekas' => $karatekasByMarket, 'msg' => 'Get all groups by participant');
         } catch (\Exception $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
         return response($response, $response['code']);
-
     }
+
 
 }
