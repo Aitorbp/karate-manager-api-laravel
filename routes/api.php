@@ -27,6 +27,7 @@ Route::post('/user/update', 'UserController@updateUser' );
 Route::delete('/user/delete', 'UserController@deleteUser' );
 
 
+Route::post('/upload/image', 'ImagesController@uploadImageGroup' );
 //GROUP SERVICES
 
 Route::middleware ('auth:api')->post('/group', 'GroupController@newGroup' );

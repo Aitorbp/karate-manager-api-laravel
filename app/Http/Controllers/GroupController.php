@@ -11,6 +11,8 @@ use App\Market;
 use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
+
+
  
     public function newGroup(Request $request)
     {
@@ -26,6 +28,8 @@ class GroupController extends Controller
             if (!$request->gender) array_push($response['error_msg'], 'Gender is required');
             if (!$request->id_user) array_push($response['error_msg'], 'Id_group name is required');
             if (!$request->password_group) array_push($response['error_msg'], 'Id_group name is required');
+         
+
             if (!count($response['error_msg']) > 0) {
                 
                 //TODO - TO TEST
