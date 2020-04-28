@@ -26,14 +26,16 @@ Route::get('/user/one', 'UserController@getUser' );
 Route::post('/user/update', 'UserController@updateUser' );
 Route::delete('/user/delete', 'UserController@deleteUser' );
 
-
+//IMAGES SERVICE
 Route::post('/upload/image', 'ImagesController@uploadImageGroup' );
+Route::post('/upload/image/karateka', 'ImagesController@uploadImageKarateka' );
+Route::post('/upload/image/user', 'ImagesController@uploadImageUser' );
 //GROUP SERVICES
 
 Route::middleware ('auth:api')->post('/group', 'GroupController@newGroup' );
 Route::delete('/group/delete/{id}', 'GroupController@deleteGroup' );
 Route::get('/group/getall', 'GroupController@getAllGroup' );
-
+Route::get('/group/one/{id}', 'GroupController@getGroupByParticipant' );
 //PARTICIPANTS
 Route::middleware ('auth:api')->post('/participant', 'ParticipantController@addParticipant' );
 Route::get('/participant/getall/{id}', 'ParticipantController@getAllParticipantsByGroup' );

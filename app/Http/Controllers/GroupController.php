@@ -11,6 +11,32 @@ use App\Market;
 use Illuminate\Support\Facades\DB;
 class GroupController extends Controller
 {
+    public function getGroupByParticipant($id)
+    {
+        $response = array('code' => 400, 'error_msg' => []);
+
+        if (!$id) array_push($response['error_msg'], 'id is required');
+
+        $group = Group::find($id);
+        if (!empty($group)){
+            try {
+        
+                $group->get();
+                //  var_dump($group);
+                //  die;
+                $response = array('code' => 200, 'group' => $group, 
+                                'msg' => 'Group, admin participant and karatekas ramdon created');
+            
+            } catch (\Throwable $th) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }else{
+             $response = array('code' => 400, 'error_msg' => "Group doesn't exist"); 
+        }
+           
+        return response($response,$response['code']);
+
+    }
 
 
  
