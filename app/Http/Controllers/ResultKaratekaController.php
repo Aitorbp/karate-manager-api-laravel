@@ -33,9 +33,14 @@ class ResultKaratekaController extends Controller
                     $resultKarateka->injured = $request->injured;
                     $resultKarateka->discontinued = $request->discontinued;
                     $totalPoints = DB::table('result_karatekas')->where('id_karateka', '=', $request->id_karateka)->sum('points'); //SUM ALL POINTS BY KARATEKA
-                    $resultKarateka->points_total = $totalPoints + $request->points;
 
+                    $resultKarateka->points_total = $totalPoints + $request->points;
                     $resultKarateka->save();
+
+                    //Asignar puntos totales en la tabla de Karateka
+                    $karateka = Karateka::find($request->id_karateka);  
+                    $karateka->points_karateka = $resultKarateka->points_total;
+                    $karateka->save();
 
                     $response = array('code' => 200, 'resultKarateka' => $resultKarateka, 'msg' => 'resultKarateka created');
                 }else {
