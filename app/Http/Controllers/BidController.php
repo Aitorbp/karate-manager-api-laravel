@@ -50,7 +50,7 @@ class BidController extends Controller
 
                                             }else{
                                                 $error ="The participant isnt in this group, it is not correct";
-                                                var_dump($error);
+                                              
                                                // $response = array('code' => 401, 'error_msg' => 'The participant isnt in this group, it is not correct');
                                             }
                                         });
@@ -59,7 +59,7 @@ class BidController extends Controller
                                
                             }else{
                                 $error ="Karateka isnt in this market, it is not correct";
-                                var_dump($error);
+                             
                                // $response = array('code' => 401, 'error_msg' => 'Karateka isnt in this market, it is not correct');
                             }   
                     });
@@ -84,10 +84,10 @@ class BidController extends Controller
 
                     $flight = Bid::updateOrCreate(
                         [
-                            //'id_participants' => $request->id_participant,
+                        'id_participants' => $request->id_participant,
                         'id_karatekas' => $market->id_karatekas,
-                        'id_group' => $market->id_group,
-                        'bid' => $request->bid],
+                        'id_group' => $market->id_group
+                        ],
 
                         ['id_market' => $market->id, 
                         'id_group' => $market->id_group,
@@ -95,11 +95,11 @@ class BidController extends Controller
                         'id_participants' => $request->id_participant,
                         'bid' => $bidFilter
                         ]);
-                        $response = array('code' => 200, 'Bid' => $flight, 'msg' => 'Bid created'); 
+                        $response = array('code' => 200, 'bid' => $flight, 'msg' => 'Bid created'); 
                  //   var_dump($bidFilter);
                     
                     $msg ="The bid is more than the value of karateka /  Bid created.";
-                    var_dump($msg);
+                  //  var_dump($msg);
                    }
                    else{
                     $response = array('code' => 200,  'msg' => '"The bid is less than the value of karateka'); 

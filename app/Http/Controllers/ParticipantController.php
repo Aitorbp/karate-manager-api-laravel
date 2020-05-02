@@ -203,6 +203,25 @@ class ParticipantController extends Controller
        return response($response,$response['code']);
     }
 
+    public function getParticipantByGroup( $id_user, $id_group){
+
+        $response = array('code' => 400, 'error_msg' => []);
+
+        if (isset($id_group) && isset($id_user)) {
+           
+            try {
+                
+                $participant = Participant::where('id_group', '=', $id_group)->where('id_user', '=', $id_user)->get();
+                
+                $response = array('code' => 200, 'participants' =>$participant,  'msg' => 'Get participant');
+                
+
+            } catch (\Throwable $th) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }
+        return response($response, $response['code']);
+    }
 
      
 }

@@ -44,6 +44,7 @@ Route::get('/participant/add/karatekas', 'ParticipantController@randomKaratekasB
 
 Route::get('/participant/get/groupsByParticipant/{id_user}','ParticipantController@getAllGroupByParticipant');
 
+Route::get('/participant/get/one/{id_user}/{id_group}','ParticipantController@getParticipantByGroup');
 //Karatekas
 Route::post('/karatekas', 'KaratekasController@createKarateka' );
 Route::delete('/karatekas/delete/{id}', 'KaratekasController@deleteKarateka' );
@@ -74,3 +75,5 @@ Route::get('/karatekas/byparticipant/{id}', 'SalesController@showSoldByParticipa
 Route::post('/payments', 'SalesController@makePaymentsParticipants' );
 
 Route::post('/average/karatekas', 'SalesController@averageKaratekas' );
+
+Route::delete('/sell/karateka/{id_participants}/{id_group}', 'SalesController@sellOwnKaratekaByParticipant' );

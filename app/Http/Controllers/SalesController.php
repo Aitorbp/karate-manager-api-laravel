@@ -35,15 +35,32 @@ class SalesController extends Controller
        return response($response, $response['code']);
     }
 
+
     public function showSoldByParticipant($idParticipant)
     {
         $response = array('code' => 400, 'error_msg' => []);
         try {
-            $karateka = Karateka::find($idParticipant);
-            if (!empty($karateka)) {
-                $response = ['karatekas' => $karateka->id, 'participant' => []];
-                $karatekasSold = $karateka->karatekasSoldByParticipant;
-                return   $response = array('code' => 200, 'Karatekas by group in market' => $karatekasSold, 'msg' => 'Get all karatekas by group in market');
+
+            $sales = Sale::where('id_participants','=',$idParticipant)->get();
+            
+            if (!empty($sales)) {
+                // var_dump($sales);
+                //         die;
+                $karatekas = Karateka::all();
+                $karatekasOfParticipant = array();
+
+                foreach ($sales as $sale) {
+                    foreach ($karatekas as $karateka){
+
+                      if( $karateka->id == $sale->id_karatekas) {
+    
+                        $karatekasOfParticipant[] = $karateka;
+                        
+                      }
+                
+                    }
+                }
+            $response = array('code' => 200, 'karatekas' => $karatekasOfParticipant, 'msg' => 'karatekas bougth by participant');
             } else {
                 return $response = array('code' => 401, 'error_msg' => 'Unautorized');
             }
@@ -99,6 +116,30 @@ class SalesController extends Controller
 
       
         return response($response, $response['code']);
+    }
+    public function sellOwnKaratekaByParticipant($idParticipant, $idGroup){
+
+        // var_dump($idParticipant);
+        //     die;
+        $response = array('code' => 400, 'error_msg' => []);
+        try {
+
+         
+            $sales =  Sale::where('id_group','=',$idGroup)->where('id_participants','=',$idParticipant)->first();
+            $participant = Participant::where('id', "=",$idParticipant )->first();
+         
+            $bidParticipant= $sales->bid_participant;
+           
+            $participant->own_budget =  $participant->own_budget - $bidParticipant;
+            $participant->save();
+            $sales->delete();
+        
+            $response = array('code' => 200, 'participant' => $participant, 'msg' => 'Get all groups by participant');
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+
     }
 
 

@@ -63,26 +63,6 @@ class MarketController extends Controller
 
 
 
-    // public function showMarketByGroup($idGroup)
-    // {
-       
-    //     $response = array('code' => 400, 'error_msg' => []);
-    //     try {
-    //         $karateka = Karateka::find($idGroup);
-    //         if (!empty($karateka)) {
-               
-    //             $response = ['karatekas' => $karateka->id, 'groups' => []];
-    //             $karatekasInMarket = $karateka->karatekasByGroupInMarket;
-    //             return   $response = array('code' => 200, 'karatekas' => $karatekasInMarket, 'msg' => 'Get all karatekas by group in market');
-    //         } else {
-    //             return $response = array('code' => 401, 'error_msg' => 'Unautorized');
-    //         }
-    //     } catch (\Exception $exception) {
-    //         $response = array('code' => 500, 'error_msg' => $exception->getMessage());
-    //     }
-    //     return response($response, $response['code']);
-
-    // }
     public function showMarketByGroup($id_group){
  
         $response = array('code' => 400, 'error_msg' => []);
