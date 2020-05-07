@@ -29,7 +29,7 @@ class MarketController extends Controller
               $karatekas = $karatekas->where('id', '<>', $value->id_karatekas); // Get all the karateka that don't have that id 
             }
 
-            $numberKaratekasInMarket = 3;
+            $numberKaratekasInMarket = 10;
             $karatekaRandom = $karatekas->random($numberKaratekasInMarket);  
     
     

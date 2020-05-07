@@ -120,7 +120,7 @@ class GroupController extends Controller
 
     public function createMarketByGroup($id_group){
         $karatekas = Karateka::all();
-        $numberKaratekasInMarket = 3;
+        $numberKaratekasInMarket = 10;
         $karatekaRandom = $karatekas->random($numberKaratekasInMarket);  
         if( count($karatekas) <= $numberKaratekasInMarket){
             $re = "All karatekas are in group";

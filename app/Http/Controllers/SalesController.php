@@ -27,9 +27,10 @@ class SalesController extends Controller
             $sold->id_group = $best_bid->id_group;
             $sold->id_participants = $best_bid->id_participants;
             $sold->id_karatekas = $best_bid->id_karatekas;
+            $sold->starting = 0;
             $sold->save();
         };
-        
+        DB::table('bids')->delete();
         $response = array('code' => 200, 'Karatekas order by group' => $bidsPerKaratekas, "Sold karateka" => $bidsPerKaratekas);
 
        return response($response, $response['code']);
@@ -130,7 +131,7 @@ class SalesController extends Controller
          
             $bidParticipant= $sales->bid_participant;
            
-            $participant->own_budget =  $participant->own_budget - $bidParticipant;
+            $participant->own_budget =  $participant->own_budget + $bidParticipant;
             $participant->save();
             $sales->delete();
         
@@ -139,6 +140,129 @@ class SalesController extends Controller
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
         }
         return response($response, $response['code']);
+
+    }
+
+
+    public function getStartingKaratekaByParticipant(  $id_participants){
+        $response = array('code' => 400, 'error_msg' => []);
+        $starting = 1;
+        // var_dump($request->id_participants);
+        try {
+           
+            $sales = Sale::where('id_participants','=',$id_participants)->where('starting','=', $starting)->get();
+       
+            // var_dump($sales );
+            // die;
+            $karatekas = Karateka::all();
+            $startingKaratekas = array();
+            foreach ($sales as $sale) {
+                foreach ($karatekas as $karateka){
+
+                  if($sale->id_karatekas == $karateka->id) {
+
+                    $startingKaratekas[] = $karateka;
+               
+                  }
+            
+                }
+            }
+            $response = array('code' => 200, 'karatekas' => $startingKaratekas, 'msg' => 'Get all karatekas starting by participant');
+           
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+    }
+    public function getAlternateKaratekaByParticipant(  $id_participants){
+        $response = array('code' => 400, 'error_msg' => []);
+        $starting = 0;
+        // var_dump($request->id_participants);
+        try {
+           
+            $sales = Sale::where('id_participants','=',$id_participants)->where('starting','=', $starting)->get();
+       
+            // var_dump($sales );
+            // die;
+            $karatekas = Karateka::all();
+            $startingKaratekas = array();
+            foreach ($sales as $sale) {
+                foreach ($karatekas as $karateka){
+
+                  if($sale->id_karatekas == $karateka->id) {
+
+                    $startingKaratekas[] = $karateka;
+               
+                  }
+            
+                }
+            }
+            $response = array('code' => 200, 'karatekas' => $startingKaratekas, 'msg' => 'Get all karatekas starting by participant');
+           
+        } catch (\Exception $exception) {
+            $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+        }
+        return response($response, $response['code']);
+    }
+
+    public function postStartingKarateka(Request $request){
+        $response = array('code' => 400, 'error_msg' => []);
+        $starting = 1;
+        if (isset($request->id_participants)){
+            //TODO - TO TEST
+            try {
+                $sale = Sale::where('id_participants','=',$request->id_participants)->where('id_karatekas','=', $request->id_karatekas)->first();
+
+                if (!empty($sale)) {
+                    try {
+                        $sale->starting = $starting ? $starting : $sale->starting;
+                       
+                        $sale->save();
+                        $response = array('code' => 200, 'msg' => 'Sale starting updated');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+                }
+            } catch (\Throwable $th) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+
+        } else {
+            $response['error_msg'] = 'Nothing to update';
+        }
+
+       return response($response,$response['code']);
+
+    }
+
+
+    public function postAlternateKarateka(Request $request){
+        $response = array('code' => 400, 'error_msg' => []);
+        $alternate = 0;
+        if (isset($request->id_participants)){
+            //TODO - TO TEST
+            try {
+                $sale = Sale::where('id_participants','=',$request->id_participants)->where('id_karatekas','=', $request->id_karatekas)->first();
+
+                if (!empty($sale)) {
+                    try {
+                        $sale->starting = $alternate;
+                       
+                        $sale->save();
+                        $response = array('code' => 200, 'msg' => 'Sale alternate updated');
+                    } catch (\Exception $exception) {
+                        $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+                    }
+                }
+            } catch (\Throwable $th) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+
+        } else {
+            $response['error_msg'] = 'Nothing to update';
+        }
+
+       return response($response,$response['code']);
 
     }
 

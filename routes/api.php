@@ -64,7 +64,7 @@ Route::get('/market/show/karatekas/{id}', 'MarketController@showMarketByGroup' )
 
 //Bids
 
-Route::post('/bid/{id}', 'BidController@createBid' );
+Route::post('/bid', 'BidController@createBid' );
 
 
 //Sales
@@ -77,3 +77,11 @@ Route::post('/payments', 'SalesController@makePaymentsParticipants' );
 Route::post('/average/karatekas', 'SalesController@averageKaratekas' );
 
 Route::delete('/sell/karateka/{id_participants}/{id_group}', 'SalesController@sellOwnKaratekaByParticipant' );
+
+Route::get('/karatekas/starting/{id_participants}', 'SalesController@getStartingKaratekaByParticipant' );
+
+Route::get('/karatekas/alternate/{id_participants}', 'SalesController@getAlternateKaratekaByParticipant' );
+
+Route::post('/karatekas/update/starting', 'SalesController@postStartingKarateka' );
+
+Route::post('/karatekas/update/alternate', 'SalesController@postAlternateKarateka' );
