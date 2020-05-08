@@ -88,6 +88,7 @@ class GroupController extends Controller
                                 $sale->id_participants =  $adminParcitipant->id;
                                 $sale->id_karatekas = $key->id;
                                 $sale->bid_participant = $key->value;
+                                $sale->starting = 0;
                                 $sale->save();
                             }
                             self::createMarketByGroup($group->id);
