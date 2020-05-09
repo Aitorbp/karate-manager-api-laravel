@@ -76,7 +76,7 @@ Route::post('/payments', 'SalesController@makePaymentsParticipants' );
 
 Route::post('/average/karatekas', 'SalesController@averageKaratekas' );
 
-Route::delete('/sell/karateka/{id_participants}/{id_group}', 'SalesController@sellOwnKaratekaByParticipant' );
+Route::delete('/sell/karateka/{id_participants}/{id_group}/{id_karatekas}', 'SalesController@sellOwnKaratekaByParticipant' );
 
 Route::get('/karatekas/starting/{id_participants}', 'SalesController@getStartingKaratekaByParticipant' );
 

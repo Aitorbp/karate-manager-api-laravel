@@ -118,7 +118,7 @@ class SalesController extends Controller
       
         return response($response, $response['code']);
     }
-    public function sellOwnKaratekaByParticipant($idParticipant, $idGroup){
+    public function sellOwnKaratekaByParticipant($idParticipant, $idGroup, $id_karatekas){
 
         // var_dump($idParticipant);
         //     die;
@@ -126,7 +126,7 @@ class SalesController extends Controller
         try {
 
          
-            $sales =  Sale::where('id_group','=',$idGroup)->where('id_participants','=',$idParticipant)->first();
+            $sales =  Sale::where('id_group','=',$idGroup)->where('id_participants','=',$idParticipant)->where('id_karatekas','=', $id_karatekas)->first();
             $participant = Participant::where('id', "=",$idParticipant )->first();
          
             $bidParticipant= $sales->bid_participant;
