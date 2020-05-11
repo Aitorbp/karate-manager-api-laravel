@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
+
+    //Función para asignar el karateka a la puja máxima que haya hecho un participante
     public function soldKarateka()
     {
         $response = array('code' => 400, 'error_msg' => []);
@@ -36,7 +38,7 @@ class SalesController extends Controller
        return response($response, $response['code']);
     }
 
-
+//Mostrar todos los karatekas vendidos por un karateka
     public function showSoldByParticipant($idParticipant)
     {
         $response = array('code' => 400, 'error_msg' => []);
@@ -72,6 +74,7 @@ class SalesController extends Controller
 
     }
 
+    //Resta de dinero cuando compras a los karatekas
     public function makePaymentsParticipants()
     {
      
@@ -90,7 +93,7 @@ class SalesController extends Controller
 
         return response($response, $response['code']);
     }
-
+//calcular la media de un jugador en función del precio al que se ha vendido en el mercado
     public function averageKaratekas()
     {
         $response = array('code' => 400, 'error_msg' => []);
@@ -118,6 +121,8 @@ class SalesController extends Controller
       
         return response($response, $response['code']);
     }
+
+    //Vender tu propio karateka al mercado
     public function sellOwnKaratekaByParticipant($idParticipant, $idGroup, $id_karatekas){
 
         // var_dump($idParticipant);
@@ -143,7 +148,7 @@ class SalesController extends Controller
 
     }
 
-
+// Coger todos los karatekas tutilares
     public function getStartingKaratekaByParticipant(  $id_participants){
         $response = array('code' => 400, 'error_msg' => []);
         $starting = 1;
@@ -174,6 +179,8 @@ class SalesController extends Controller
         }
         return response($response, $response['code']);
     }
+
+    //Coger karatekas que están en banquillo
     public function getAlternateKaratekaByParticipant(  $id_participants){
         $response = array('code' => 400, 'error_msg' => []);
         $starting = 0;
@@ -205,6 +212,7 @@ class SalesController extends Controller
         return response($response, $response['code']);
     }
 
+    //Poner de titular a un karateka
     public function postStartingKarateka(Request $request){
         $response = array('code' => 400, 'error_msg' => []);
         $starting = 1;
@@ -235,7 +243,7 @@ class SalesController extends Controller
 
     }
 
-
+//Poner de suplente a un karateka
     public function postAlternateKarateka(Request $request){
         $response = array('code' => 400, 'error_msg' => []);
         $alternate = 0;

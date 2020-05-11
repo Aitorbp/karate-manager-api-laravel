@@ -63,15 +63,18 @@ class ParticipantController extends Controller
                                   //  var_dump($karatekas);
                                   //  die;
                                 
-                                    $karatekaRandom = $karatekas->random(2);
+                                    $karatekaRandom = $karatekas->random(8);
                                     //  var_dump($karatekaRandom);
                                     //  die;
+                                    $startingKarateka = 0;
+
                                     foreach ($karatekaRandom as $key) {
                                         $sale = new Sale();
                                         $sale->id_group = $group->id;
                                         $sale->id_participants =  $parcitipant->id;
                                         $sale->id_karatekas = $key->id;
                                         $sale->bid_participant = $key->value;
+                                        $sale->starting = $startingKarateka;
                                         $sale->save();
                                     }
                                     $response = array('code' => 200, 'Participant' => $parcitipant, 'karateka' => $karatekaRandom, 'msg' => 'Participant and sales created', );
