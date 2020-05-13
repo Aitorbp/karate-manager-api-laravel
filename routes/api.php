@@ -70,7 +70,9 @@ Route::post('/bid', 'BidController@createBid' );
 //Bids between rivals
 
 Route::post('/bid/rivals/create', 'BidBetweenRivalsController@createBidRival' );
+
 Route::get('/bid/to/rivals/{id_participant_bid_send}', 'BidBetweenRivalsController@myBidsToRivals' );
+
 Route::get('/bid/from/rivals/{id_participant_bid_receive}', 'BidBetweenRivalsController@myBidsRecieveFromToRivals' );
 
 Route::get('/bid/rivals/accepted', 'BidBetweenRivalsController@acceptBet' );

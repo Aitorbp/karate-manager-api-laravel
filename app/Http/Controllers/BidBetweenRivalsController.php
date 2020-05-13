@@ -21,11 +21,6 @@ class BidBetweenRivalsController extends Controller
         if (!count($response['error_msg']) > 0) {
             try {
 
-                var_dump($request->id_karateka);
-                var_dump($request->id_participant_bid_send);
-                var_dump($request->id_participant_bid_receive);
-                var_dump($request->bid_rival);
-               
                 $bidRival = new BidBetweenRivals();
               //  var_dump($bidRival);
                 $bidRival1 = \App\BidBetweenRivals::updateOrCreate(
@@ -44,9 +39,9 @@ class BidBetweenRivalsController extends Controller
                         ]
                         
                 );
-                var_dump($bidRival);
-              //    $bidBetweenRivals->save;
-                $response = array('code' => 200, 'bidBetweenRivals' => $bidRival1, 'msg' => 'Bid rival created'); 
+             
+           
+                $response = array('code' => 200, 'bidRivals' => $bidRival1, 'msg' => 'Bid rival created'); 
 
             }catch(\Exception $exception) {
                 $response = array('code' => 500, 'error_msg' => $exception->getMessage());

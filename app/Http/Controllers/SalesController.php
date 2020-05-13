@@ -9,6 +9,7 @@ use App\Bid;
 use App\Karateka;
 use App\Sale;
 use App\Participant;
+use App\BidBetweenRivals;
 use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
@@ -134,12 +135,20 @@ class SalesController extends Controller
             $sales =  Sale::where('id_group','=',$idGroup)->where('id_participants','=',$idParticipant)->where('id_karatekas','=', $id_karatekas)->first();
             $participant = Participant::where('id', "=",$idParticipant )->first();
          
+            $bidRival = BidBetweenRivals::where('id_karateka', '=', $id_karatekas)->where('id_participant_bid_receive','=',$idParticipant)->first();
+         
+            if($bidRival!=null){
+                $bidRival->delete();
+            }
+           
             $bidParticipant= $sales->bid_participant;
            
             $participant->own_budget =  $participant->own_budget + $bidParticipant;
-            $participant->save();
-            $sales->delete();
+             $participant->save();
+             $sales->delete();
         
+            
+
             $response = array('code' => 200, 'participant' => $participant, 'msg' => 'Get all groups by participant');
         } catch (\Exception $exception) {
             $response = array('code' => 500, 'error_msg' => $exception->getMessage());
