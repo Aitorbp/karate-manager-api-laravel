@@ -160,4 +160,49 @@ public function myBidsToRivals($id_participant_bid_send)
 
         return response($response, $response['code']);
     }
+
+    public function refuseBet($id_participant_bid_send, $id_participant_bid_receive, $id_karatekas){
+        $response = array('code' => 400, 'error_msg' => []);
+      
+        if (!$id_participant_bid_send) array_push($response['error_msg'], 'id_participant_bid_send is required');
+        if (!$id_participant_bid_receive) array_push($response['error_msg'], 'id_participant_bid_receive is required');
+        if (!$id_karatekas) array_push($response['error_msg'], 'id_participant_bid_receive is required');
+
+       
+        if (!count($response['error_msg']) > 0) {
+            try {
+                $acceptBidsFromRivals = BidBetweenRivals::where('id_participant_bid_send', '=', $id_participant_bid_send)->where('id_karateka', '=', $id_karatekas)->where('id_participant_bid_receive', '=', $id_participant_bid_receive)->first();
+                $acceptBidsFromRivals->delete();
+
+                $response = array('code' => 200,  'msg' => 'Bid refuse');
+            }catch(\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }
+
+        return response($response, $response['code']);
+    }
+
+    public function refuseOwnBeteeeee($id_participant_bid_send,  $id_karatekas){
+        $response = array('code' => 400, 'error_msg' => []);
+
+ 
+        if (!$id_participant_bid_send) array_push($response['error_msg'], 'id_participant_bid_send is required');
+        if (!$id_karatekas) array_push($response['error_msg'], 'id_participant_bid_receive is required');
+
+       
+        if (!count($response['error_msg']) > 0) {
+            try {
+                $acceptBidsFromRivals = BidBetweenRivals::where('id_participant_bid_send', '=', $id_participant_bid_send)->where('id_karateka', '=', $id_karatekas)->first();
+
+               $acceptBidsFromRivals->delete();
+
+                $response = array('code' => 200,  'msg' => 'Bid refuse');
+            }catch(\Exception $exception) {
+                $response = array('code' => 500, 'error_msg' => $exception->getMessage());
+            }
+        }
+
+        return response($response, $response['code']);
+    }
 }

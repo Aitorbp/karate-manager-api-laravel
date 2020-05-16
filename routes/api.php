@@ -77,6 +77,13 @@ Route::get('/bid/from/rivals/{id_participant_bid_receive}', 'BidBetweenRivalsCon
 
 Route::get('/bid/rivals/accepted/{id_participant_bid_send}/{id_participant_bid_receive}/{id_karateka}', 'BidBetweenRivalsController@acceptBet' );
 
+Route::delete('/bid/rivals/refused/ownbid/{id_participant_bid_send}/{id_karateka}', 'BidBetweenRivalsController@refuseOwnBeteeeee' );
+
+Route::delete('/bid/rivals/refused/{id_participant_bid_send}/{id_participant_bid_receive}/{id_karateka}', 'BidBetweenRivalsController@refuseBet' );
+
+
+
+
 //Sales
 Route::post('/sold', 'SalesController@soldKarateka' );
 
