@@ -75,7 +75,7 @@ Route::get('/bid/to/rivals/{id_participant_bid_send}', 'BidBetweenRivalsControll
 
 Route::get('/bid/from/rivals/{id_participant_bid_receive}', 'BidBetweenRivalsController@myBidsRecieveFromToRivals' );
 
-Route::get('/bid/rivals/accepted', 'BidBetweenRivalsController@acceptBet' );
+Route::get('/bid/rivals/accepted/{id_participant_bid_send}/{id_participant_bid_receive}/{id_karateka}', 'BidBetweenRivalsController@acceptBet' );
 
 //Sales
 Route::post('/sold', 'SalesController@soldKarateka' );

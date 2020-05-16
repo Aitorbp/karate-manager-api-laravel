@@ -103,14 +103,14 @@ public function myBidsToRivals($id_participant_bid_send)
 
 
 
-    public function acceptBet(Request $request)
+    public function acceptBet($id_participant_bid_send, $id_participant_bid_receive, $id_karatekas)
     {
        
         $response = array('code' => 400, 'error_msg' => []);
 
-        if (!$request->id_participant_bid_send) array_push($response['error_msg'], 'id_participant_bid_send is required');
-        if (!$request->id_participant_bid_receive) array_push($response['error_msg'], 'id_participant_bid_receive is required');
-        if (!$request->id_karatekas) array_push($response['error_msg'], 'id_participant_bid_receive is required');
+        if (!$id_participant_bid_send) array_push($response['error_msg'], 'id_participant_bid_send is required');
+        if (!$id_participant_bid_receive) array_push($response['error_msg'], 'id_participant_bid_receive is required');
+        if (!$id_karatekas) array_push($response['error_msg'], 'id_participant_bid_receive is required');
  
         if (!count($response['error_msg']) > 0) {
             try {
@@ -119,27 +119,32 @@ public function myBidsToRivals($id_participant_bid_send)
                 // var_dump($request->id_karatekas);
                 
                 //Cambiamos el karateka de participante
-                $acceptBidsFromRivals = Sale::where('id_karatekas', '=', $request->id_karatekas)->where('id_participants', '=',$request->id_participant_bid_receive )->first();
+                $acceptBidsFromRivals = Sale::where('id_karatekas', '=', $id_karatekas)->where('id_participants', '=',$id_participant_bid_receive )->first();
+
+                //Validation If exists id_karateka or id_participant
+                if(!$acceptBidsFromRivals){
+                    return $response = array('code' => 500, 'error_msg' => 'Id_karateka or id_participant not found');
+                }  
               
-                $acceptBidsFromRivals->id_participants = $request->id_participant_bid_send;
+                $acceptBidsFromRivals->id_participants = $id_participant_bid_send;
 
               
 
                 $acceptBidsFromRivals->save();
 
 
-              $finishTrade = BidBetweenRivals::where('id_participant_bid_send', '=', $request->id_participant_bid_send)->where('id_karateka', '=', $request->id_karatekas)->where('id_participant_bid_receive', '=', $request->id_participant_bid_receive)->first();
+              $finishTrade = BidBetweenRivals::where('id_participant_bid_send', '=', $id_participant_bid_send)->where('id_karateka', '=', $id_karatekas)->where('id_participant_bid_receive', '=', $id_participant_bid_receive)->first();
 
 
                 //Restamos cantidad al participante que compra el karateka
-                $participantReceiveMoney = Participant::where('id','=', $request->id_participant_bid_send)->first();
+                $participantReceiveMoney = Participant::where('id','=', $id_participant_bid_send)->first();
                 $participantReceiveMoney->own_budget = $participantReceiveMoney->own_budget - $finishTrade->bid_rival;
 
                
                  $participantReceiveMoney->save();
 
                // Sumamos cantidad al participante que vende el karateka
-               $participantGiveMoney = Participant::where('id','=', $request->id_participant_bid_receive)->first();
+               $participantGiveMoney = Participant::where('id','=', $id_participant_bid_receive)->first();
                $participantGiveMoney->own_budget = $participantGiveMoney->own_budget + $finishTrade->bid_rival;
 
             
