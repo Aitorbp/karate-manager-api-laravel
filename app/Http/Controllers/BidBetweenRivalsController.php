@@ -183,7 +183,7 @@ public function myBidsToRivals($id_participant_bid_send)
         return response($response, $response['code']);
     }
 
-    public function refuseOwnBeteeeee($id_participant_bid_send,  $id_karatekas){
+    public function refuseOwnBet($id_participant_bid_send,  $id_karatekas){
         $response = array('code' => 400, 'error_msg' => []);
 
  
