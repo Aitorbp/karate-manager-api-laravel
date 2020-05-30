@@ -15,4 +15,6 @@ class Participant extends Model
     {
         return $this->belongsTo('App\User','id');
     }
+
+ 
 }

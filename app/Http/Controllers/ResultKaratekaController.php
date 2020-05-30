@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ResultKarateka;
+use App\ResultParticipant;
 use App\Karateka;
 use App\Championship;
+use App\Sale;
+ 
 use Illuminate\Support\Facades\DB;
 class ResultKaratekaController extends Controller
 {
@@ -56,6 +59,44 @@ class ResultKaratekaController extends Controller
 
         return response($response, $response['code']);
     }
+
+
+    public function givePointsToPartByChamp(Request $request){
+        $response = array('code' => 400, 'error_msg' => []);
+ 
+
+ 
+        $participants = ResultKarateka::where('id_championship', '=', $request->id_championship)
+        ->join('sales', function ($join) {
+            $join->on('sales.id_karatekas', '=', 'result_karatekas.id_karateka')
+            ->where('sales.starting', '=', 1);
+        })
+        ->join('participants', function ($join) {
+            $join->on('participants.id', '=', 'sales.id_participants');
+        })
+        ->select('participants.*', 'result_karatekas.points as points_karateka', 'result_karatekas.id_championship as id_championship', 'result_karatekas.id_karateka as id_karateka')
+        ->get();
+
+     
+
+        foreach ($participants as $part) {
+            $resultParticipant = new ResultParticipant();    
+            $resultParticipant->points = $part->points_karateka;
+            $resultParticipant->id_championship = $part->id_championship;
+            $resultParticipant->id_participant = $part->id;
+            $resultParticipant->save();
+        }
+            
+            
+        
+        
+
+           $response = array('code' => 200, 'resultKarateka' => $participants, 'msg' => 'resultKarateka created');
+
+        return response($response, $response['code']);
+    }
+
+
 
     public function getAllResultByKarateka($id)
     {

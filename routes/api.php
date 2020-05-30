@@ -56,6 +56,11 @@ Route::post('/championship', 'ChampionshipController@createChampionship' );
 //Result Karatekas
 Route::post('/result/karateka', 'ResultKaratekaController@addResultKarateka' );
 Route::get('/result/karateka/{id}', 'ResultKaratekaController@getAllResultByKarateka' );
+Route::get('/points/participants', 'ResultKaratekaController@givePointsToPartByChamp' );
+
+//Result Karatekas
+Route::get('/group/result/championship/{id_championship}/{id_group}', 'ResultParticipantsController@getResultByChampGroup' );
+
 
 //Market
 
